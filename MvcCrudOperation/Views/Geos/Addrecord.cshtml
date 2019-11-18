@@ -1,0 +1,225 @@
+﻿@model MvcCrudOperation.Models.GeosModel
+
+
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validate/1.16.0/jquery.validate.min.js"></script>
+
+<script src="https://ajax.aspnetcdn.com/ajax/jquery.validation.unobtrusive/3.2.6/jquery.validate.unobtrusive.min.js"></script>
+
+
+
+<div class="modal-dialog" id="ModalPopUp">
+
+    <div class="modal-content">
+
+        <div class="modal-header">
+
+            <h4 class="modal-title" id="myModalLabel">@ViewBag.Message</h4>
+
+        </div>
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-horizontal", @id = "ModalForm" }))
+
+        {
+
+            <div class="modal-body">
+
+                <div class="form-horizontal" style="padding-bottom:5px">
+
+
+
+                    @Html.HiddenFor(m => m.id)
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                        <div class="col-md-9">
+
+                            @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.FatherName, htmlAttr ibutes: new { @class = "control-label col-md-3" })
+
+                        <div class="col-md-9">
+
+                            @Html.TextBoxFor(model => model.FatherName, "", new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.FatherName, "", new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.DOB, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                        <div class="col-md-9">
+
+                            @Html.TextBoxFor(model => model.DOB, "", new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.DOB, "", new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.MobileNo, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                        <div class="col-md-9">
+
+                            @Html.TextBoxFor(model => model.MobileNo, "", new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.MobileNo, "", new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.Age, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                        <div class="col-md-9">
+
+                            @Html.TextBoxFor(model => model.Age, "", new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.Age, "", new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.EmailId, htmlAttributes: new { @class = "control-label col-md-3" })
+
+                        <div class="col-md-9">
+
+                            @Html.TextBoxFor(model => model.EmailId, "", new { @class = "form-control" })
+
+                            @Html.ValidationMessageFor(model => model.EmailId, "", new { @class = "text-danger" })
+
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+
+                        @Html.LabelFor(model => model.Password, htmlAttributes: new { @class = "control-label col-md-3" })
+
+
+
+
+
+
+
+
+
+
+
+
+
+                        <div class="modal-footer" style="padding:5px">
+
+                            <div class="form-group">
+
+                                <div class="col-md-offset-2 col-md-10">
+
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                    <input type="submit" class="btn btn-primary" id="confirmok1" value="Save changes" />
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        }
+
+                    </div>
+
+                </div>
+
+
+
+                <script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $('.btn-primary').click(function () {
+
+            var std = $(this).attr('id');
+
+            var title = $(this).attr('title');
+
+
+
+            //var Id = $(this).attr('id');
+
+            $('#myModal').modal({
+
+                backdrop: 'static',
+
+                keyboard: false
+
+            })
+
+            .on('click', '#confirmok1', function (e) {
+
+                $.ajax({
+
+                    type: "POST",
+
+                    url: '@Url.Action("Addrecord")',
+
+                    data: '{StudentId: ' + JSON.stringify(std) + '}',
+
+                    dataType: "json",
+
+                    contentType: "application/json; charset=utf-8",
+
+                    success: function (response) {
+
+                        window.location.reload();
+
+
+
+                        $('#myModal').modal('hide');
+
+                    },
+
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+
+                        alert('oops, something bad happened')
+
+                    }
+
+                });
+
+            });
+
+        });
+
+
+
+        });
+
+    });
+
+                </script>
