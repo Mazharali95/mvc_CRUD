@@ -15,7 +15,5 @@ namespace MvcCrudOperation.Models
         public string Gender { get; set; }
         public string DeptName { get; set; }
 
-      
-            
-        }
     }
+}

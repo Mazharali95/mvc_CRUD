@@ -34,28 +34,21 @@ namespace MvcCrudOperation.Controllers
                 gmodel.Add(
                     new GeosModel
                     {
-
                         id = Convert.ToInt32(dr["id"]),
                         Name = Convert.ToString(dr["Name"]),
                         DeptName = Convert.ToString(dr["DeptName"]),
-
-
-
-
+                        Gender = Convert.ToString(dr["Gender"])
                     });
+            }
+            if (gmodel.Count() == 0)
+            {
+                Response.Write("<script>alert('sorry no data foud')</script>");
 
-               }
-               if (gmodel.Count() == 0)
-               {
-                  Response.Write("<script>alert('sorry no data foud')</script>");
-
-              }
-
-
-                   MySqlConn.Close();
+            }
+            MySqlConn.Close();
             ModelState.Clear();
             return View(gmodel.ToList());
-            
+
             //return View(dbHandle.GetStudent());
         }
 
@@ -66,9 +59,9 @@ namespace MvcCrudOperation.Controllers
         }
 
         // GET: Geos/Create
-        public ActionResult Create()    
+        public ActionResult Create()
         {
-            return View();
+            return PartialView("Addrecord");
         }
 
         // POST: Geos/Create
@@ -79,7 +72,7 @@ namespace MvcCrudOperation.Controllers
             {
                 // TODO: Add insert logic here
 
-                return RedirectToAction("Dailogs");
+                return RedirectToAction("Index");
             }
             catch
             {
@@ -91,27 +84,26 @@ namespace MvcCrudOperation.Controllers
         [HttpGet]
         public ActionResult Edit(int id)
         {
-            return PartialView("addrecord", dbHandle.GetStudent().Find(model => model.id == id));
+            var editModel = dbHandle.GetStudent().Find(model => model.id == id);
+            return PartialView("addrecord", editModel);
             //return View(dbHandle.GetStudent().Find(model => model.id==id));
         }
 
 
         // POST: Geos/Dailogs/5
         [HttpPost]
-        public ActionResult Edit(int id, GeosModel smodel)
+        public ActionResult Save(GeosModel smodel)
         {
-            try
+            GeosDBModel sdb = new GeosDBModel();
+            if (smodel.id == 0)
             {
-                GeosDBModel sdb = new GeosDBModel();
+                // add logic
+            }
+            else
+            {
                 sdb.UpdateDetails(smodel);
-
-
-                return RedirectToAction("Dailogs");
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("index");
         }
 
         // GET: Geos/Delete/5

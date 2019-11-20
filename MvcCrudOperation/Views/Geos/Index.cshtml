@@ -1,58 +1,46 @@
 ﻿@model IEnumerable<MvcCrudOperation.Models.GeosModel>
 
+@{
+    ViewBag.Title = "MVC CRUD";
+}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-<p>
-
-    @Html.ActionLink("Create New", "Create")
+<p class="mt-5">
+    <a href="#" id="createLink" onclick="OpenModelPopUp(this)">Create New</a>
 </p>
 
 @using (Html.BeginForm("Index", "Geos", FormMethod.Get))
-
 {
-    <input type="text" placeholder="UserName" name="search" />
-        <input type="submit" id="show" name="Submit" value="Search" />
+    <div class="row">
+        <div class="col-3 form-group">
+            <input type="text" class="form-control" placeholder="UserName" name="search" />
+        </div>
+        <div class="col-1">
+            <input type="submit" id="show" class="btn btn-success" name="Submit" value="Search" />
+        </div>
+    </div>
+
 }
-<table class="table">
+<table class="table mt-3">
     <tr>
-        @*<th>
-            @Html.DisplayNameFor(model => model.IdDepartment)
-        </th>*@
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Gender)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DeptName)
-        </th>
+        <th>@Html.DisplayNameFor(model => model.Name)</th>
+        <th>@Html.DisplayNameFor(model => model.Gender)</th>
+        <th>@Html.DisplayNameFor(model => model.DeptName)</th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        @*<td>
-            @Html.DisplayFor(modelItem => item.IdDepartment)
-        </td>*@
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Gender)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DeptName)
-        </td>
-        <td>
-            <a href="#" onclick="OpenModelPopUp()">Edit</a>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id }) |
-            @*@Html.ActionLink("Details", "Details", new { id=item.id }) |*@
-            @Html.ActionLink("Delete", "Delete", new { id=item.id })
-        </td>
-    </tr>
-}
-
-    
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@Html.DisplayFor(modelItem => item.Name)</td>
+            <td>@Html.DisplayFor(modelItem => item.Gender)</td>
+            <td>@Html.DisplayFor(modelItem => item.DeptName)</td>
+            <td>
+                <a href="#" id="editLink" data-edit-id="@item.id" onclick="OpenModelPopUp(this)">Edit</a> |
+                @Html.ActionLink("Details", "Details", new { id = item.id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.id })
+            </td>
+        </tr>
+    }
 </table>
 
 
@@ -62,36 +50,45 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="myTitle">Modal title</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body">
-                ...
+            <div class="modal-body" id="myModal-body">
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+                <button type="button" onclick="submitForm()" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
 </div>
 
 
+@section Scripts {
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <script>
-        
-        $(document).ready(function(){
-            
-
-
-
-        });
-
-        function OpenModelPopUp() {
+        function OpenModelPopUp(control) {
             $('#myModal').modal('show')
+            if ($(control)[0].id == "createLink") {
+
+                $("#myTitle").text("Create New Employee")
+                $("#myModal-body").load("/Geos/create");
+            }
+            else {
+                var editId = $(control).data("edit-id")
+                var url = "/Geos/edit/" + editId; 
+                $("#myTitle").text("Edit Employee")
+                $("#myModal-body").load(url);
+            }
+        }
+
+        function submitForm() {
+            $("#myModal-body > form").submit();
         }
     </script>
-    
-    
+}
